@@ -1,4 +1,5 @@
 # Control de Entrada y Salida 🚀
+![image](https://github.com/user-attachments/assets/939ae896-3fba-411c-9d0f-f5ddb78d2b67)
 
 **Control-Entrada-Salida** es una aplicación diseñada para gestionar de forma eficiente el registro de entradas y salidas de personas en diferentes entornos, como empresas, instituciones educativas o eventos. Su objetivo es optimizar el control de acceso, mejorando la seguridad y la trazabilidad de los movimientos.
 
