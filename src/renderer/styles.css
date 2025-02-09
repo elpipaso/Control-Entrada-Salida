@@ -1,0 +1,218 @@
+:root {
+    --primary: #2c3e50;
+    --secondary: #3498db;
+    --success: #27ae60;
+    --danger: #e74c3c;
+    --light: #ecf0f1;
+    --dark: #2c3e50;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #f8f9fa;
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--primary);
+    color: white;
+    border-radius: 10px;
+}
+
+.control-panel {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--secondary);
+}
+
+.button-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.entrada {
+    background: var(--success);
+    color: white;
+}
+
+.salida {
+    background: var(--danger);
+    color: white;
+}
+
+.sync-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.sync-button:hover {
+    transform: rotate(180deg);
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.stats-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.stats-card h2 {
+    margin-bottom: 1rem;
+    color: var(--primary);
+}
+
+.highlight {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+.chart-container {
+    min-height: 300px;
+}
+
+.registros {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.log-entries {
+    margin-top: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.log-entry {
+    padding: 1rem;
+    margin: 0.5rem 0;
+    background: var(--light);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    color: white;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.notification.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification.success {
+    background: var(--success);
+}
+
+.notification.error {
+    background: var(--danger);
+}
+
+.suggestions-container {
+    position: absolute;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+    border: 2px solid var(--secondary);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.suggestion-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.suggestion-item:hover {
+    background: var(--light);
+}
