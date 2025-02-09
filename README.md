@@ -55,5 +55,5 @@ Este proyecto está bajo la licencia [MIT](LICENSE).
 
 ## 🙌 Agradecimientos
 
-Gracias a todas las personas que contribuyen al desarrollo de esta aplicación. Tu apoyo hace posible que sigamos mejorando. 💙
+Gracias a todas las personas que contribuyen al desarrollo de esta aplicación. Tu apoyo hace posible que siga mejorando.
 
