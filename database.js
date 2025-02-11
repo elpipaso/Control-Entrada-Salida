@@ -15,6 +15,18 @@ try {
 
 let db = null;
 
+const crearTablaUsuarios = () => {
+  return executeQuery(`
+    CREATE TABLE IF NOT EXISTS usuarios (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nombre_completo TEXT NOT NULL,
+      rut TEXT UNIQUE NOT NULL,
+      cargo TEXT CHECK(cargo IN ('Bombero', 'Aspirante')) NOT NULL,
+      fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+};
+
 const validarRUT = (rut) => {
   try {
     // Paso 1: Normalización del RUT
@@ -85,6 +97,7 @@ const registrarPersona = async (nombre, rut) => {
 };
 
 
+
 const MIGRATIONS = [
     require('./migrations/001_initial_schema.sql'),
     require('./migrations/002_add_sync_columns.sql'),
@@ -132,30 +145,33 @@ const initializeDB = () => {
     if (err) return console.error('Error opening database:', err.message);
     
     db.serialize(() => {
-      // Tabla Personal con campos de sincronización
-      db.run(`CREATE TABLE IF NOT EXISTS personal (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        uuid TEXT UNIQUE,
-        nombre_completo TEXT NOT NULL,
-        rut TEXT NOT NULL UNIQUE,
-        sync_status INTEGER DEFAULT 0,
-        last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        deleted INTEGER DEFAULT 0
-      )`);
+      // Crear todas las tablas
+      db.run(`
+        CREATE TABLE IF NOT EXISTS personal (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          uuid TEXT UNIQUE,
+          nombre_completo TEXT NOT NULL,
+          rut TEXT NOT NULL UNIQUE,
+          sync_status INTEGER DEFAULT 0,
+          last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          deleted INTEGER DEFAULT 0
+        )`);
+        
+      db.run(`
+        CREATE TABLE IF NOT EXISTS registros (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          uuid TEXT UNIQUE,
+          personal_id INTEGER,
+          entrada TIMESTAMP,
+          salida TIMESTAMP,
+          duracion REAL,
+          sync_status INTEGER DEFAULT 0,
+          last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          deleted INTEGER DEFAULT 0,
+          FOREIGN KEY(personal_id) REFERENCES personal(id)
+        )`);
 
-      // Tabla Registros con campos de sincronización
-      db.run(`CREATE TABLE IF NOT EXISTS registros (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        uuid TEXT UNIQUE,
-        personal_id INTEGER,
-        entrada TIMESTAMP,
-        salida TIMESTAMP,
-        duracion REAL,
-        sync_status INTEGER DEFAULT 0,
-        last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        deleted INTEGER DEFAULT 0,
-        FOREIGN KEY(personal_id) REFERENCES personal(id)
-      )`);
+      crearTablaUsuarios();
     });
   });
 };
@@ -251,6 +267,34 @@ const getPendingSync = () => {
     WHERE sync_status = 0
   `);
 };
+const registrarUsuario = async (nombre, rut, cargo) => {
+  if (!validarRUT(rut)) throw new Error('RUT inválido');
+  
+  try {
+    // Verificar si el RUT ya existe
+    const existe = await executeSelect(
+      'SELECT id FROM usuarios WHERE rut = ? LIMIT 1',
+      [rut.replace(/[.-]/g, '')]
+    );
+    
+    if (existe.length > 0) throw new Error('RUT ya registrado');
+
+    // Insertar nuevo usuario
+    const result = await executeQuery(
+      `INSERT INTO usuarios (nombre_completo, rut, cargo)
+       VALUES (?, ?, ?)`,
+      [nombre, rut.replace(/[.-]/g, ''), cargo]
+    );
+
+    return { 
+      success: true,
+      id: result.id,
+      message: 'Registro exitoso' 
+    };
+  } catch (error) {
+    throw error;
+  }
+};
 
 const applyServerChanges = async (changes) => {
   return new Promise((resolve, reject) => {
@@ -284,6 +328,7 @@ module.exports = {
   validarRUT,
   registrarPersona,
   registrarMovimiento,
+  registrarUsuario,
   getPendingSync,
   applyServerChanges,
   executeQuery,

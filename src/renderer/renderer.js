@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupAutocomplete();
         setupChart();
     };
+// En renderer.js agregar:
+document.getElementById('btnNuevoRegistro').addEventListener('click', () => {
+    ipcRenderer.send('abrir-ventana-registro');
+  });
 
     const setupEventListeners = () => {
         document.getElementById('btnEntrada').addEventListener('click', handleRegistro('entrada'));

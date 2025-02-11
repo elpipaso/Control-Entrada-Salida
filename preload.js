@@ -43,7 +43,9 @@ contextBridge.exposeInMainWorld('api', {
     },
     
     // Manejo de errores globales
-    onError: (callback) => ipcRenderer.on('global-error', callback)
+    onError: (callback) => ipcRenderer.on('global-error', callback),
+    registrarUsuario: (datos) => ipcRenderer.invoke('registrar-usuario', datos)
+    
 });
 
 // Protección contra sobreescritura accidental

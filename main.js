@@ -32,6 +32,7 @@ function createWindow() {
         show: false
     });
 
+
     // Cargar la aplicación
     mainWindow.loadFile(path.join(__dirname, 'src', 'renderer', 'index.html'));
 
@@ -95,3 +96,41 @@ process.on('uncaughtException', (error) => {
         mainWindow.webContents.send('global-error', error.message);
     }
 });
+// Agregar en main.js
+ipcMain.on('abrir-ventana-registro', () => {
+    createRegisterWindow();
+  });
+  
+  function createRegisterWindow() {
+    const registerWindow = new BrowserWindow({
+      width: 400,
+      height: 500,
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true,
+        preload: path.join(__dirname, 'preload.js')
+      }
+    });
+    
+    registerWindow.loadFile(path.join(__dirname, 'src/renderer/registro.html'));
+  }
+
+// Agregar en la sección de creación de ventanas
+function createRegisterWindow() {
+    const registerWindow = new BrowserWindow({
+      width: 400,
+      height: 400,
+      webPreferences: {
+        preload: path.join(__dirname, 'preload.js'),
+        nodeIntegration: false,
+        contextIsolation: true
+      }
+    });
+  
+    registerWindow.loadFile(path.join(__dirname, 'src/renderer/registro.html'));
+  }
+  
+  // Agregar handler IPC
+  ipcMain.handle('registrar-usuario', async (event, datos) => {
+    return await database.registrarUsuario(datos.nombre, datos.rut, datos.cargo);
+  });
