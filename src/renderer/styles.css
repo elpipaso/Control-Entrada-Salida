@@ -64,6 +64,33 @@ input[type="text"]:focus {
     border-color: var(--secondary);
 }
 
+.btn-registro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50 auto;  /* Esto centra el botón horizontalmente */
+    padding: 8px 16px;
+    background: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+    gap: 8px;
+    width: 200px; /* Controla el ancho del botón */
+}
+
+.btn-registro:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.btn-registro:active {
+    transform: translateY(0);
+}
+
 .button-group {
     display: grid;
     grid-template-columns: 1fr 1fr;
