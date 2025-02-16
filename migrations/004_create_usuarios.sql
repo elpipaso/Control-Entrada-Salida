@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS usuarios (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nombre_completo TEXT NOT NULL,
+  rut TEXT UNIQUE NOT NULL,
+  cargo TEXT CHECK(cargo IN ('Bombero', 'Aspirante')) NOT NULL,
+  fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
